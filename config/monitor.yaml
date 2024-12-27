@@ -1,0 +1,87 @@
+# 文件系統監控配置
+
+# 監控路徑列表
+paths:
+  # 系統目錄
+  - C:/Windows/System32
+  - C:/Program Files
+  - C:/Program Files (x86)
+  
+  # 用戶目錄 (使用環境變量)
+  - ${USERPROFILE}/Downloads
+  - ${USERPROFILE}/Desktop
+  - ${USERPROFILE}/Documents
+
+# 監控設置
+settings:
+  # 是否遞歸監控子目錄
+  recursive: true
+  
+  # 監控的文件類型
+  extensions:
+    - .exe
+    - .dll
+    - .sys
+    - .bat
+    - .ps1
+    - .vbs
+    - .doc
+    - .docx
+    - .xls
+    - .xlsx
+    - .pdf
+    - .zip
+    - .rar
+    - .7z
+    - .msi
+
+# 註冊表監控配置
+registry:
+  # 自啟動項監控路徑
+  autorun_paths:
+    - "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run"
+    - "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\RunOnce"
+    - "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\RunServices"
+    - "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\RunServicesOnce"
+    - "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon\\Userinit"
+    - "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon\\Shell"
+    - "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Windows\\AppInit_DLLs"
+    - "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders"
+    - "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders"
+    - "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer\\Run"
+    - "SOFTWARE\\Microsoft\\Active Setup\\Installed Components"
+
+  # 可疑操作模式
+  suspicious_patterns:
+    # 命令執行
+    - "powershell.exe -enc"
+    - "cmd.exe /c"
+    - "regsvr32.exe /s /u /i:"
+    - "rundll32.exe javascript:"
+    - "mshta.exe"
+    - "wscript.exe"
+    - "cscript.exe"
+    - "certutil.exe -urlcache"
+    - "bitsadmin /transfer"
+    # 惡意軟件特徵
+    - "\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup"
+    - "\\Software\\Microsoft\\Windows\\CurrentVersion\\Run"
+    - "\\CurrentControlSet\\Services"
+    - ".vbs"
+    - ".ps1"
+    - "javascript:"
+    - "vbscript:"
+    # 系統修改
+    - "\\System\\CurrentControlSet\\Services"
+    - "\\SecurityProviders\\WDigest"
+    - "\\Control\\SecurityProviders\\WDigest"
+    - "\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options"
+    - "\\Microsoft\\Windows NT\\CurrentVersion\\SilentProcessExit"
+    - "\\Microsoft\\Windows\\CurrentVersion\\Policies"
+    - "\\Microsoft\\Windows\\System\\Scripts"
+
+  settings:
+    # 檢查間隔(毫秒)
+    check_interval_ms: 1000
+    # 每次收集的最大事件數
+    max_events_per_collection: 100
